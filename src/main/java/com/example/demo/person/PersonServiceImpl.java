@@ -20,6 +20,7 @@ public class PersonServiceImpl implements PersonService {
     public Person createPerson(CreatePerson createPerson) {
         PersonEntity personEntity = mapToPersonEntity(createPerson);
         PersonEntity savedPersonEntity = repository.save(personEntity);
+        System.out.println("LALA");
         return mapToPerson(savedPersonEntity);
     }
 
