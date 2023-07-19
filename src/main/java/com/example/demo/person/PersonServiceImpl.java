@@ -70,6 +70,7 @@ public class PersonServiceImpl implements PersonService {
         personEntity.setSurname(createPerson.getSurname());
         return personEntity;
     }
+
     private Person mapToPerson(PersonEntity personEntity) {
         Person person = new Person();
         person.setId(personEntity.getId());

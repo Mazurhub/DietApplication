@@ -1,6 +1,7 @@
 package com.example.demo.person;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +18,6 @@ public class PersonController {
     public Person createPerson(@RequestBody CreatePerson createPerson) {
         return service.createPerson(createPerson);
     }
-
     @GetMapping
     @RequestMapping("/{id}")
     public Person getPerson(@PathVariable UUID id) {

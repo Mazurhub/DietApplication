@@ -1,30 +1,36 @@
 package com.example.demo.person;
 
+import com.example.demo.person.email.Email;
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 import java.util.UUID;
 
 @Entity
-@Transactional
-@Data
+@Table(name = "PersonEntity")
 @NoArgsConstructor
-@Table(name = "person")
 @Getter
 @Setter
-
 public class PersonEntity {
     @Id
-    @Column(name = "person_id")
     private UUID id;
     private String name;
     private String surname;
+    @OneToOne
+    @JoinColumn(name = "email_id", referencedColumnName = "id")
+    private Email email;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_person_contact_id")
-    private PersonContactEntity personContactEntity;
+// Comement TODO Caschade Type
+
+    public Email getEmail() {
+        return email;
+    }
+
+    public void setEmail(Email email) {
+        this.email = email;
+    }
 }
+
