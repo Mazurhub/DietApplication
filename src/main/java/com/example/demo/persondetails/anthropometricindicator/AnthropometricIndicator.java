@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
@@ -15,9 +16,10 @@ public class AnthropometricIndicator {
     private UUID id;
     private Double weight;
     private Double hight;
-    private Double bmi;
-    private Double pal;
-    private Double ppm;
-    private Double cpm;
+    private Integer age;
+    private String sex;
+    private LocalDate measurementDate;
+    private String bmi;
+    private String ppm;
 
 }
