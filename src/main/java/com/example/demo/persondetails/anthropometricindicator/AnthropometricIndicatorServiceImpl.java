@@ -19,14 +19,15 @@ public class AnthropometricIndicatorServiceImpl implements AnthropometricIndicat
         return mapToAnthropometricIndicator(savedAnthropometricIndicatorEntity);
     }
     @Override
+    public AnthropometricIndicator getAnthropometricIndicator(UUID id) {
+        AnthropometricIndicatorEntity anthropometricIndicatorEntity = repository.findById(id).get();
+        return mapToAnthropometricIndicator(anthropometricIndicatorEntity);
+    }
+    @Override
     public AnthropometricIndicator calculateBMI(UUID id) {
         AnthropometricIndicatorEntity anthropometricIndicatorEntity = repository.findById(id).orElse(null);
 
-        if (anthropometricIndicatorEntity == null) {
-            throw new IllegalArgumentException("Person with ID " + id + " not found.");
-        }
-
-        String bmi = calculateBMIValue(anthropometricIndicatorEntity.getWeight(), anthropometricIndicatorEntity.getHight());
+        String bmi = calculateBMIValue(anthropometricIndicatorEntity.getWeight(), anthropometricIndicatorEntity.getHeight());
         anthropometricIndicatorEntity.setBmi(bmi);
         repository.save(anthropometricIndicatorEntity);
 
@@ -39,16 +40,38 @@ public class AnthropometricIndicatorServiceImpl implements AnthropometricIndicat
     public AnthropometricIndicator calculatePPM(UUID id) {
         AnthropometricIndicatorEntity anthropometricIndicatorEntity = repository.findById(id).orElse(null);
 
-        if (anthropometricIndicatorEntity == null) {
-            throw new IllegalArgumentException("Person with ID " + id + " not found.");
-        }
-
-        String ppm = calculatePMMValue(anthropometricIndicatorEntity.getWeight(), anthropometricIndicatorEntity.getHight(), anthropometricIndicatorEntity.getAge(), anthropometricIndicatorEntity.getSex());
+        String ppm = calculatePMMValue(anthropometricIndicatorEntity.getWeight(), anthropometricIndicatorEntity.getHeight(), anthropometricIndicatorEntity.getAge(), anthropometricIndicatorEntity.getSex());
         anthropometricIndicatorEntity.setPpm(ppm);
         repository.save(anthropometricIndicatorEntity);
 
         AnthropometricIndicator anthropometricIndicator = mapToAnthropometricIndicator(anthropometricIndicatorEntity);
         anthropometricIndicator.setPpm(ppm);
+        return anthropometricIndicator;
+    }
+
+    @Override
+    public AnthropometricIndicator calculateCPM(UUID id) {
+        AnthropometricIndicatorEntity anthropometricIndicatorEntity = repository.findById(id).orElse(null);
+
+        double ppm = Double.parseDouble(anthropometricIndicatorEntity.getPpm().replace(",", "."));
+        EnumPalCoefficient palCoefficient = anthropometricIndicatorEntity.getEnumPalCoefficient();
+        double cpm = switch (palCoefficient) {
+            case PAL_1 -> ppm * 1.2;
+            case PAL_2 -> ppm * 1.4;
+            case PAL_3 -> ppm * 1.6;
+            case PAL_4 -> ppm * 1.8;
+            case PAL_5 -> ppm * 2.0;
+        };
+
+        DecimalFormat df = new DecimalFormat("#.##");
+        String roundedNumberCPM = df.format(cpm);
+
+        anthropometricIndicatorEntity.setCpm(roundedNumberCPM);
+        repository.save(anthropometricIndicatorEntity);
+
+        AnthropometricIndicator anthropometricIndicator = mapToAnthropometricIndicator(anthropometricIndicatorEntity);
+        anthropometricIndicator.setCpm(roundedNumberCPM);
+
         return anthropometricIndicator;
     }
 
@@ -63,6 +86,7 @@ public class AnthropometricIndicatorServiceImpl implements AnthropometricIndicat
         }
         DecimalFormat df = new DecimalFormat("#.##");
         String roundedNumberPPM = df.format(ppm);
+
         return roundedNumberPPM;
     }
 
@@ -75,16 +99,16 @@ public class AnthropometricIndicatorServiceImpl implements AnthropometricIndicat
         String roundedNumberBMI = df.format(bmi);
 
         if (bmi < 18.5) {
-            return roundedNumberBMI + " " + "You are underweight: your BMI score is under 18,5" ;
+            return roundedNumberBMI + " " + "You are underweight: your BMI score is under 18,5. You are outside the healthy BMI range (25 - 30).";
         }
         else if (bmi < 25) {
             return roundedNumberBMI + " " + "You are Normal: your BMI score is beetween 18,5 - 25,0";
         }
         else if (bmi < 30) {
-            return roundedNumberBMI + " " + "You are  Overweight: your BMI score is beetween 25,0 - 30,0";
+            return roundedNumberBMI + " " + "You are  Overweight: your BMI score is beetween 25,0 - 30,0. You are outside the healthy BMI range (25 - 30)";
         }
         else {
-            return roundedNumberBMI + " " + "You are  Obese: your BMI score is above 30,0";
+            return roundedNumberBMI + " " + "You are  Obese: your BMI score is above 30,0. You are outside the healthy BMI range (25 - 30)";
         }
     }
 
@@ -93,8 +117,9 @@ public class AnthropometricIndicatorServiceImpl implements AnthropometricIndicat
         anthropometricIndicatorEntity.setId(UUID.randomUUID());
         anthropometricIndicatorEntity.setAge(createAnthropometricIndicator.getAge());
         anthropometricIndicatorEntity.setWeight(createAnthropometricIndicator.getWeight());
-        anthropometricIndicatorEntity.setHight(createAnthropometricIndicator.getHight());
+        anthropometricIndicatorEntity.setHeight(createAnthropometricIndicator.getHeight());
         anthropometricIndicatorEntity.setSex(createAnthropometricIndicator.getSex());
+        anthropometricIndicatorEntity.setEnumPalCoefficient(createAnthropometricIndicator.getEnumPalCoefficient());
         return anthropometricIndicatorEntity;
     }
     private AnthropometricIndicator mapToAnthropometricIndicator (AnthropometricIndicatorEntity anthropometricIndicatorEntity) {
@@ -102,8 +127,12 @@ public class AnthropometricIndicatorServiceImpl implements AnthropometricIndicat
         anthropometricIndicator.setId(anthropometricIndicatorEntity.getId());
         anthropometricIndicator.setAge(anthropometricIndicatorEntity.getAge());
         anthropometricIndicator.setWeight(anthropometricIndicatorEntity.getWeight());
-        anthropometricIndicator.setHight(anthropometricIndicatorEntity.getHight());
+        anthropometricIndicator.setHeight(anthropometricIndicatorEntity.getHeight());
         anthropometricIndicator.setSex(anthropometricIndicatorEntity.getSex());
+        anthropometricIndicator.setEnumPalCoefficient(anthropometricIndicatorEntity.getEnumPalCoefficient());
+        anthropometricIndicator.setBmi(anthropometricIndicatorEntity.getBmi());
+        anthropometricIndicator.setPpm(anthropometricIndicatorEntity.getPpm());
+        anthropometricIndicator.setCpm(anthropometricIndicatorEntity.getCpm());
         return anthropometricIndicator;
     }
 }

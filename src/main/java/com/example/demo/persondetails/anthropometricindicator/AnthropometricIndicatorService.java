@@ -6,6 +6,6 @@ public interface AnthropometricIndicatorService {
     AnthropometricIndicator createAnthropometricIndicator(CreateAnthropometricIndicator createAnthropometricIndicator);
     AnthropometricIndicator calculateBMI(UUID id);
     AnthropometricIndicator calculatePPM(UUID id);
-
-
+    AnthropometricIndicator calculateCPM(UUID id);
+    AnthropometricIndicator getAnthropometricIndicator(UUID id);
 }

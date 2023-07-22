@@ -9,11 +9,13 @@ import java.time.LocalDate;
 @Setter
 public class CreateAnthropometricIndicator {
     private Double weight;
-    private Double hight;
+    private Double height;
     private Integer age;
     private String sex;
     private LocalDate measurementDate;
     private String bmi;
     private String ppm;
+    private String cpm;
+    private EnumPalCoefficient enumPalCoefficient;
 
 }
