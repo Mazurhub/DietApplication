@@ -1,21 +1,13 @@
-package com.example.demo.persondetails.anthropometricindicator;
+package com.example.demo.persondetails;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
-@Entity
 @Getter
 @Setter
-@NoArgsConstructor
-public class AnthropometricIndicatorEntity {
-    @Id
-    private UUID id;
+public class CreatePersonDetails {
     private Double weight;
     private Double height;
     private Integer age;
@@ -25,5 +17,4 @@ public class AnthropometricIndicatorEntity {
     private String ppm;
     private String cpm;
     private EnumPalCoefficient enumPalCoefficient;
-
 }

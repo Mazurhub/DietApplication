@@ -1,4 +1,4 @@
-package com.example.demo.persondetails.anthropometricindicator;
+package com.example.demo.persondetails;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AnthropometricIndicator {
+public class PersonDetails {
     private UUID id;
     private Double weight;
     private Double height;
@@ -25,5 +25,4 @@ public class AnthropometricIndicator {
     private String ppm;
     private String cpm;
     private EnumPalCoefficient enumPalCoefficient;
-
 }
