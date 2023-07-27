@@ -14,4 +14,8 @@ public enum EnumPalCoefficient {
     PAL_5(2.0);
 
     private final double coefficient;
+
+    public Double getCoefficientAsString() {
+        return coefficient;
+    }
 }

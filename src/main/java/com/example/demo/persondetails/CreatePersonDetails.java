@@ -13,8 +13,11 @@ public class CreatePersonDetails {
     private Integer age;
     private String sex;
     private LocalDate measurementDate;
-    private String bmi;
-    private String ppm;
-    private String cpm;
+    private double bmi;
+    private double ppm;
+    private double cpm;
+    private double protein;
+    private double fat;
+    private double carbs;
     private EnumPalCoefficient enumPalCoefficient;
 }

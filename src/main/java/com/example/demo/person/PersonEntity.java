@@ -19,6 +19,7 @@ public class PersonEntity {
     private UUID id;
     private String name;
     private String surname;
+
     @OneToOne
     @JoinColumn(name = "email_id", referencedColumnName = "id")
     private Email email;

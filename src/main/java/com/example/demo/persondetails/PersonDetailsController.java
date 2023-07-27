@@ -5,7 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/persondetails")
@@ -20,25 +23,30 @@ public class PersonDetailsController {
     // Dzięki tym trzem poniższym metodą mogę wyświetlać tylko obliczoną wartość bez konieczności tworzenia klasy DTO.
 // To rozwiązanie jest potencjalnie ryzykowane biorąc pod uwagę bezpieczeństwo danych i dostęp do nich przez osoby nieautoryzowane.
     @GetMapping("/calculate-bmi/{id}")
-    public ResponseEntity<String> calculateBMI(@PathVariable UUID id) {
+    public ResponseEntity<Double> calculateBMI(@PathVariable UUID id) {
         PersonDetails personDetails = service.calculateBMI(id);
-        String bmi = personDetails.getBmi();
+        double bmi = personDetails.getBmi();
         return ResponseEntity.status(HttpStatus.OK).body(bmi);
     }
 
     @GetMapping("/calculate-ppm/{id}")
-    public ResponseEntity<String> calculatePPM(@PathVariable UUID id) {
+    public ResponseEntity<Double> calculatePPM(@PathVariable UUID id) {
         PersonDetails personDetails = service.calculatePPM(id);
-        String ppm = personDetails.getPpm();
+        double ppm = personDetails.getPpm();
         return ResponseEntity.status(HttpStatus.OK).body(ppm);
     }
 
     @GetMapping("/calculate-cpm/{id}")
-    public ResponseEntity<String> calculateCPM(@PathVariable UUID id) {
+    public ResponseEntity<Double> calculateCPM(@PathVariable UUID id) {
         PersonDetails anthropometricIndicator = service.calculateCPM(id);
-        String cpm = anthropometricIndicator.getCpm();
+        double cpm = anthropometricIndicator.getCpm();
         return ResponseEntity.status(HttpStatus.OK).body(cpm);
     }
+    @GetMapping("/calculate-macroelements/{id}")
+    public ResponseEntity<List<Double>> calculateMacroelements(@PathVariable UUID id) {
+        return service.calculateMacroelements(id);
+    }
+
     //Wyświetlenie wszystkich wskaźników antropometrycznych
     @GetMapping("/{id}")
     public PersonDetails getPersonDetails(@PathVariable UUID id) {

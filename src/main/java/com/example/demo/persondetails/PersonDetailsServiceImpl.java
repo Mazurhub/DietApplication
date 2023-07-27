@@ -1,9 +1,14 @@
 package com.example.demo.persondetails;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -18,6 +23,7 @@ public class PersonDetailsServiceImpl implements PersonDetailsService {
         PersonDetailsEntity savedPersonDetailsEntity = repository.save(personDetailsEntity);
         return mapToPersonDetails(savedPersonDetailsEntity);
     }
+
     @Override
     public PersonDetails getPersonDetails(UUID id) {
         PersonDetailsEntity personDetailsEntity = repository.findById(id).get();
@@ -27,33 +33,56 @@ public class PersonDetailsServiceImpl implements PersonDetailsService {
     @Override
     public PersonDetails calculateBMI(UUID id) {
         PersonDetailsEntity personDetailsEntity = repository.findById(id).orElse(null);
+        double heightInMeters = personDetailsEntity.getHeight() / 100.0;
 
-        String bmi = calculateBMIValue(personDetailsEntity.getWeight(), personDetailsEntity.getHeight());
-        personDetailsEntity.setBmi(bmi);
+        double bmi = personDetailsEntity.getWeight() / (heightInMeters * heightInMeters);
+
+        BigDecimal bmiBigDecimal = BigDecimal.valueOf(bmi).setScale(2, RoundingMode.HALF_UP);
+        double roundedNumberBMI = bmiBigDecimal.doubleValue();
+
+        personDetailsEntity.setBmi(roundedNumberBMI);
         repository.save(personDetailsEntity);
 
         PersonDetails personDetails = mapToPersonDetails(personDetailsEntity);
-        personDetails.setBmi(bmi);
+        personDetails.setBmi(roundedNumberBMI);
         return personDetails;
     }
 
     @Override
     public PersonDetails calculatePPM(UUID id) {
-        PersonDetailsEntity personDetailsEntity = repository.findById(id).orElse(null);
+        PersonDetailsEntity personDetailsEntity = repository.findById(id).get();
 
-        String ppm = calculatePMMValue(personDetailsEntity.getWeight(), personDetailsEntity.getHeight(), personDetailsEntity.getAge(), personDetailsEntity.getSex());
-        personDetailsEntity.setPpm(ppm);
+        double weight = personDetailsEntity.getWeight();
+        double height = personDetailsEntity.getHeight();
+        int age = personDetailsEntity.getAge();
+        String sex = personDetailsEntity.getSex();
+
+        double ppm = 0.0;
+
+        if (sex.equals("Women")) {
+            ppm = 655.1 + (9.563 * weight + (1.85 * height) - (4.676 * age));
+        } else if (sex.equals("Man")) {
+            ppm = 66.5 + (13.75 * weight) + (5.003 * height) - (6.775 * age);
+        } else {
+            throw new IllegalArgumentException("Incorrect sex, please check and try again");
+        }
+
+        BigDecimal ppmBigDecimal = BigDecimal.valueOf(ppm).setScale(2, RoundingMode.HALF_UP);
+        double roundedNumberPPM = ppmBigDecimal.doubleValue();
+
+        personDetailsEntity.setPpm(roundedNumberPPM);
         repository.save(personDetailsEntity);
 
         PersonDetails personDetails = mapToPersonDetails(personDetailsEntity);
-        personDetails.setPpm(ppm);
+        personDetails.setPpm(roundedNumberPPM);
         return personDetails;
     }
+
     @Override
     public PersonDetails calculateCPM(UUID id) {
-        PersonDetailsEntity personDetailsEntity = repository.findById(id).orElse(null);
+        PersonDetailsEntity personDetailsEntity = repository.findById(id).get();
 
-        double ppm = Double.parseDouble(personDetailsEntity.getPpm().replace(",", "."));
+        double ppm = personDetailsEntity.getPpm();
         EnumPalCoefficient palCoefficient = personDetailsEntity.getEnumPalCoefficient();
         double cpm = switch (palCoefficient) {
             case PAL_1 -> ppm * 1.2;
@@ -63,49 +92,47 @@ public class PersonDetailsServiceImpl implements PersonDetailsService {
             case PAL_5 -> ppm * 2.0;
         };
 
-        DecimalFormat df = new DecimalFormat("#.##");
-        String roundedNumberCPM = df.format(cpm);
+        BigDecimal bigDecimalCPM = BigDecimal.valueOf(cpm).setScale(2, RoundingMode.HALF_UP);
+        double roundedNumberCPM = bigDecimalCPM.doubleValue();
 
         personDetailsEntity.setCpm(roundedNumberCPM);
         repository.save(personDetailsEntity);
 
-        PersonDetails anthropometricIndicator = mapToPersonDetails(personDetailsEntity);
-        anthropometricIndicator.setCpm(roundedNumberCPM);
+        PersonDetails personDetails = mapToPersonDetails(personDetailsEntity);
+        personDetails.setCpm(roundedNumberCPM);
 
-        return anthropometricIndicator;
-    }
-    private String calculatePMMValue(double weight, double height, int age, String sex) {
-        double ppm;
-        if (sex.equals("Women")) {
-            ppm = 655.1 + (9.563 * weight + (1.85 * height) - (4.676 * age));
-        } else if (sex.equals("Men")) {
-            ppm = 66.5 + (13.75 * weight) + (5.003 * height) - (6.775 * age);
-        } else {
-            throw new IllegalArgumentException("Incorrect sex, please check and try again");
-        }
-        DecimalFormat df = new DecimalFormat("#.##");
-        String roundedNumberPPM = df.format(ppm);
-
-        return roundedNumberPPM;
+        return personDetails;
     }
 
-    private String calculateBMIValue(double weight, double height) {
-        // Przekształcenie wzrostu z centymetrów na metry
-        double heightInMeters = height / 100.0;
-        double bmi = weight / (heightInMeters * heightInMeters);
+    public ResponseEntity<List<Double>> calculateMacroelements(UUID id) {
+        PersonDetailsEntity personDetailsEntity = repository.findById(id).get();
+        Double cpmValue = personDetailsEntity.getCpm();
 
-        DecimalFormat df = new DecimalFormat("#.##");
-        String roundedNumberBMI = df.format(bmi);
+        Double proteinKcal = (cpmValue / 100) * 10; //procentowy udział w diecie
+        Double proteinPerGram = proteinKcal / 4; //4 kcal na gram białka
 
-        if (bmi < 18.5) {
-            return roundedNumberBMI + " " + "You are underweight: your BMI score is under 18,5. You are outside the healthy BMI range (25 - 30).";
-        } else if (bmi < 25) {
-            return roundedNumberBMI + " " + "You are Normal: your BMI score is beetween 18,5 - 25,0";
-        } else if (bmi < 30) {
-            return roundedNumberBMI + " " + "You are  Overweight: your BMI score is beetween 25,0 - 30,0. You are outside the healthy BMI range (25 - 30)";
-        } else {
-            return roundedNumberBMI + " " + "You are  Obese: your BMI score is above 30,0. You are outside the healthy BMI range (25 - 30)";
-        }
+        BigDecimal bigDecimalProtein = BigDecimal.valueOf(proteinPerGram).setScale(2, RoundingMode.HALF_UP);
+        double roundedProteinPerGram = bigDecimalProtein.doubleValue();
+        personDetailsEntity.setProtein(roundedProteinPerGram);
+
+        Double fatKcal = (cpmValue / 100) * 30; //procentowy udział w diecie
+        Double fatPerGram = fatKcal / 9; // 9 kcal na gram tłuszczu
+
+        BigDecimal bigDecimalFat = BigDecimal.valueOf(fatPerGram).setScale(2, RoundingMode.HALF_UP);
+        double roundedFatPerGram = bigDecimalFat.doubleValue();
+        personDetailsEntity.setFat(roundedFatPerGram);
+
+        Double CarbsKcal = (cpmValue / 100) * 70; //procentowy udział w diecie
+        Double CarbsPerGram = CarbsKcal / 4; //4 kcal na gram węglowodanów
+
+        BigDecimal bigDecimalCarbs = BigDecimal.valueOf(CarbsPerGram).setScale(2, RoundingMode.HALF_UP);
+        double roundedCarbsPerGram = bigDecimalCarbs.doubleValue();
+        personDetailsEntity.setCarbs(roundedCarbsPerGram);
+
+        repository.save(personDetailsEntity);
+
+        List<Double> macroelementsList = Arrays.asList(roundedProteinPerGram, roundedFatPerGram, roundedCarbsPerGram);
+        return ResponseEntity.ok(macroelementsList);
     }
 
     private PersonDetailsEntity mapToPersonDetailsEntity(CreatePersonDetails createPersonDetails) {
@@ -130,6 +157,9 @@ public class PersonDetailsServiceImpl implements PersonDetailsService {
         personDetails.setBmi(personDetailsEntity.getBmi());
         personDetails.setPpm(personDetailsEntity.getPpm());
         personDetails.setCpm(personDetailsEntity.getCpm());
+        personDetails.setProtein(personDetailsEntity.getProtein());
+        personDetails.setCarbs(personDetailsEntity.getCarbs());
+        personDetails.setFat(personDetailsEntity.getFat());
         return personDetails;
     }
 }
