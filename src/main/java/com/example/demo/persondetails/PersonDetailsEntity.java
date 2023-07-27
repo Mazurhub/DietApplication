@@ -1,7 +1,7 @@
 package com.example.demo.persondetails;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.example.demo.persondetails.DietInformation.DietInformation;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,8 +13,10 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "persondetailsentity")
 public class PersonDetailsEntity {
     @Id
+    @Column(name = "id")
     private UUID id;
     private Double weight;
     private Double height;
@@ -28,4 +30,8 @@ public class PersonDetailsEntity {
     private double fat;
     private double carbs;
     private EnumPalCoefficient enumPalCoefficient;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "dietinformation_id", referencedColumnName = "id")
+    private DietInformation dietinformation;
 }

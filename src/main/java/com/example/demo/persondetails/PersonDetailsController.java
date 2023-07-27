@@ -38,8 +38,8 @@ public class PersonDetailsController {
 
     @GetMapping("/calculate-cpm/{id}")
     public ResponseEntity<Double> calculateCPM(@PathVariable UUID id) {
-        PersonDetails anthropometricIndicator = service.calculateCPM(id);
-        double cpm = anthropometricIndicator.getCpm();
+        PersonDetails personDetails = service.calculateCPM(id);
+        double cpm = personDetails.getCpm();
         return ResponseEntity.status(HttpStatus.OK).body(cpm);
     }
     @GetMapping("/calculate-macroelements/{id}")

@@ -1,5 +1,6 @@
 package com.example.demo.persondetails;
 
+import com.example.demo.persondetails.DietInformation.DietInformation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -70,7 +71,10 @@ public class PersonDetailsServiceImpl implements PersonDetailsService {
         BigDecimal ppmBigDecimal = BigDecimal.valueOf(ppm).setScale(2, RoundingMode.HALF_UP);
         double roundedNumberPPM = ppmBigDecimal.doubleValue();
 
-        personDetailsEntity.setPpm(roundedNumberPPM);
+        DietInformation dietInformation = new DietInformation();
+        dietInformation.setPpm(roundedNumberPPM);
+        personDetailsEntity.setDietinformation(dietInformation);
+
         repository.save(personDetailsEntity);
 
         PersonDetails personDetails = mapToPersonDetails(personDetailsEntity);
@@ -81,8 +85,9 @@ public class PersonDetailsServiceImpl implements PersonDetailsService {
     @Override
     public PersonDetails calculateCPM(UUID id) {
         PersonDetailsEntity personDetailsEntity = repository.findById(id).get();
+        DietInformation dietInformation = repository.findById(id).get().getDietinformation();
 
-        double ppm = personDetailsEntity.getPpm();
+        double ppm = dietInformation.getPpm();
         EnumPalCoefficient palCoefficient = personDetailsEntity.getEnumPalCoefficient();
         double cpm = switch (palCoefficient) {
             case PAL_1 -> ppm * 1.2;
@@ -95,7 +100,8 @@ public class PersonDetailsServiceImpl implements PersonDetailsService {
         BigDecimal bigDecimalCPM = BigDecimal.valueOf(cpm).setScale(2, RoundingMode.HALF_UP);
         double roundedNumberCPM = bigDecimalCPM.doubleValue();
 
-        personDetailsEntity.setCpm(roundedNumberCPM);
+        dietInformation.setCpm(roundedNumberCPM);
+        personDetailsEntity.setDietinformation(dietInformation);
         repository.save(personDetailsEntity);
 
         PersonDetails personDetails = mapToPersonDetails(personDetailsEntity);
@@ -106,28 +112,35 @@ public class PersonDetailsServiceImpl implements PersonDetailsService {
 
     public ResponseEntity<List<Double>> calculateMacroelements(UUID id) {
         PersonDetailsEntity personDetailsEntity = repository.findById(id).get();
-        Double cpmValue = personDetailsEntity.getCpm();
+        DietInformation dietInformation = repository.findById(id).get().getDietinformation();
+        Double cpmValue = dietInformation.getCpm();
 
         Double proteinKcal = (cpmValue / 100) * 10; //procentowy udział w diecie
         Double proteinPerGram = proteinKcal / 4; //4 kcal na gram białka
 
         BigDecimal bigDecimalProtein = BigDecimal.valueOf(proteinPerGram).setScale(2, RoundingMode.HALF_UP);
         double roundedProteinPerGram = bigDecimalProtein.doubleValue();
-        personDetailsEntity.setProtein(roundedProteinPerGram);
+
+        dietInformation.setProtein(roundedProteinPerGram);
+        personDetailsEntity.setDietinformation(dietInformation);
 
         Double fatKcal = (cpmValue / 100) * 30; //procentowy udział w diecie
         Double fatPerGram = fatKcal / 9; // 9 kcal na gram tłuszczu
 
         BigDecimal bigDecimalFat = BigDecimal.valueOf(fatPerGram).setScale(2, RoundingMode.HALF_UP);
         double roundedFatPerGram = bigDecimalFat.doubleValue();
-        personDetailsEntity.setFat(roundedFatPerGram);
+
+        dietInformation.setFat(roundedFatPerGram);
+        personDetailsEntity.setDietinformation(dietInformation);
 
         Double CarbsKcal = (cpmValue / 100) * 70; //procentowy udział w diecie
         Double CarbsPerGram = CarbsKcal / 4; //4 kcal na gram węglowodanów
 
         BigDecimal bigDecimalCarbs = BigDecimal.valueOf(CarbsPerGram).setScale(2, RoundingMode.HALF_UP);
         double roundedCarbsPerGram = bigDecimalCarbs.doubleValue();
-        personDetailsEntity.setCarbs(roundedCarbsPerGram);
+
+        dietInformation.setCarbs(roundedCarbsPerGram);
+        personDetailsEntity.setDietinformation(dietInformation);
 
         repository.save(personDetailsEntity);
 
@@ -155,11 +168,6 @@ public class PersonDetailsServiceImpl implements PersonDetailsService {
         personDetails.setSex(personDetailsEntity.getSex());
         personDetails.setEnumPalCoefficient(personDetailsEntity.getEnumPalCoefficient());
         personDetails.setBmi(personDetailsEntity.getBmi());
-        personDetails.setPpm(personDetailsEntity.getPpm());
-        personDetails.setCpm(personDetailsEntity.getCpm());
-        personDetails.setProtein(personDetailsEntity.getProtein());
-        personDetails.setCarbs(personDetailsEntity.getCarbs());
-        personDetails.setFat(personDetailsEntity.getFat());
         return personDetails;
     }
 }
