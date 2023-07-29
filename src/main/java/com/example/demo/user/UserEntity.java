@@ -1,7 +1,7 @@
 package com.example.demo.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.example.demo.person.PersonEntity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +14,15 @@ import java.util.UUID;
 public class UserEntity {
     @Id
     private UUID id;
-    private String name;
-    private String surname;
+    @Column(unique = true)
+    private String userName;
+    @Column(unique = true)
+    private String password;
+    @Column(unique = true)
+    private String email;
+    @Column(unique = true)
+    private int phoneNumber;
+
+    @OneToOne(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private PersonEntity personEntity;
 }

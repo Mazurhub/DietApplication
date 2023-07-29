@@ -41,9 +41,4 @@ public class UserController {
     public User updateUser(@PathVariable UUID id, @RequestBody UpdateUser updatePerson) {
         return service.updateUser(id, updatePerson);
     }
-
-    @PatchMapping("/{id}")
-    public User updateUserFields(@PathVariable UUID id, @RequestBody  Map<String, Object> fields) {
-        return service.updateUserFields(id, fields);
-    }
 }

@@ -9,6 +9,6 @@ import lombok.Setter;
 public class CreatePerson {
     private String name;
     private String surname;
-    private String mail;
+    private String email;
     private Integer phoneNumber;
 }

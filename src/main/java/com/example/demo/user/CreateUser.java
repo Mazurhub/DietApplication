@@ -7,6 +7,8 @@ import lombok.Setter;
 @Setter
 //Tutaj nie ma numeru ID. Ważne jest, żeby numer ID był unikalny dla każdego użytkownika
 public class CreateUser {
-    private String name;
-    private String surname;
+    private String userName;
+    private String password;
+    private String email;
+    private int phoneNumber;
 }

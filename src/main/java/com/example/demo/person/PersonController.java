@@ -15,10 +15,6 @@ import java.util.UUID;
 public class PersonController {
     private final PersonService service;
 
-    @PostMapping
-    public Person createPerson(@RequestBody CreatePerson createPerson) {
-        return service.createPerson(createPerson);
-    }
     @PostMapping("/details/{id}")
     public PersonDetails addPersonDetails(@PathVariable UUID id, @RequestBody CreatePersonDetails createPersonDetails) {
         return service.addPersonDetails(id, createPersonDetails);
@@ -35,6 +31,10 @@ public class PersonController {
         return service.updatePerson(id, updatePerson);
     }
     @PatchMapping("/{id}")
+    public Person getNameAndSurname(@PathVariable UUID id, @RequestBody  Map<String, Object> fields) {
+        return service.getNameAndSurname(id, fields);
+    }
+    @PatchMapping("/change/{id}")
     public Person updatePersonFields(@PathVariable UUID id, @RequestBody  Map<String, Object> fields) {
         return service.updatePersonFields(id, fields);
     }

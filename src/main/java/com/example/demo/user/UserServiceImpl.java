@@ -1,5 +1,9 @@
 package com.example.demo.user;
 
+import com.example.demo.person.CreatePerson;
+import com.example.demo.person.Person;
+import com.example.demo.person.PersonEntity;
+import com.example.demo.person.PersonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
@@ -14,11 +18,25 @@ import java.util.UUID;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository repository;
+    private final PersonRepository personRepository;
 
     @Override
     public User createUser(CreateUser createUser) {
+        // Tworzymy nowego użytkownika
         UserEntity userEntity = mapToUserEntity(createUser);
         UserEntity savedUserEntity = repository.save(userEntity);
+
+        // Tworzymy nowy obiekt PersonDetails, który zawiera informacje o użytkowniku
+        CreatePerson createPerson = new CreatePerson();
+        createPerson.setEmail(createUser.getEmail());
+        createPerson.setPhoneNumber(createUser.getPhoneNumber());
+
+        // Tworzymy osobę i przypisujemy ją do użytkownika
+        PersonEntity personEntity = mapToPersonEntity(createPerson);
+        personEntity.setUserEntity(savedUserEntity);
+        PersonEntity savedPersonEntity = personRepository.save(personEntity);
+
+        // Zwracamy użytkownika
         return mapToUser(savedUserEntity);
     }
 
@@ -38,27 +56,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(UUID id, UpdateUser updatePerson) {
-        UserEntity existingUser = repository.findById(id).get();
-        existingUser.setName(updatePerson.getName());
-        existingUser.setSurname(updatePerson.getSurname());
-        return mapToUser(repository.save(existingUser));
-    }
+        UserEntity existingUser = repository.findById(id).orElse(null);
 
-    @Override
-    public User updateUserFields(UUID id, Map<String, Object> fields) {
-        Optional<UserEntity> existingUser = repository.findById(id);
+        if (existingUser != null) {
+            existingUser.setUserName(updatePerson.getUserName());
+            existingUser.setPassword(updatePerson.getPassword());
+            existingUser.setEmail(updatePerson.getEmail());
+            existingUser.setPhoneNumber(updatePerson.getPhoneNumber());
 
-        if (existingUser.isPresent()) {
-            fields.forEach((key, value) -> {
-                Field field = ReflectionUtils.findField(UserEntity.class, key);
-                field.setAccessible(true);
-                ReflectionUtils.setField(field, existingUser.get(), value);
-            });
-            return mapToUser(repository.save(existingUser.get()));
+            PersonEntity existingPerson = existingUser.getPersonEntity();
+            if (existingPerson != null) {
+                existingPerson.setEmail(updatePerson.getEmail());
+                existingPerson.setPhoneNumber(updatePerson.getPhoneNumber());
+                personRepository.save(existingPerson);
+            }
+            existingUser = repository.save(existingUser);
+            return mapToUser(existingUser);
         }
         return null;
     }
-
     @Override
     public long deleteUser(UUID id) {
         repository.deleteById(id);
@@ -68,16 +84,40 @@ public class UserServiceImpl implements UserService {
     private UserEntity mapToUserEntity(CreateUser createUser) {
         UserEntity userEntity = new UserEntity();
         userEntity.setId(UUID.randomUUID());
-        userEntity.setName(createUser.getName());
-        userEntity.setSurname(createUser.getSurname());
+        userEntity.setUserName(createUser.getUserName());
+        userEntity.setPassword(createUser.getPassword());
+        userEntity.setEmail(createUser.getEmail());
+        userEntity.setPhoneNumber(createUser.getPhoneNumber());
         return userEntity;
     }
 
     private User mapToUser(UserEntity userEntity) {
         User user = new User();
         user.setId(userEntity.getId());
-        user.setName(userEntity.getName());
-        user.setSurname(userEntity.getSurname());
+        user.setUserName(userEntity.getUserName());
+        user.setPassword(userEntity.getPassword());
+        user.setEmail(userEntity.getEmail());
+        user.setPhoneNumber(userEntity.getPhoneNumber());
         return user;
+    }
+
+    private PersonEntity mapToPersonEntity(CreatePerson createPerson) {
+        PersonEntity personEntity = new PersonEntity();
+        personEntity.setId(UUID.randomUUID());
+        personEntity.setName(createPerson.getName());
+        personEntity.setSurname(createPerson.getSurname());
+        personEntity.setEmail(createPerson.getEmail());
+        personEntity.setPhoneNumber(createPerson.getPhoneNumber());
+        return personEntity;
+    }
+
+    private Person mapToPerson(PersonEntity personEntity) {
+        Person person = new Person();
+        person.setId(personEntity.getId());
+        person.setName(personEntity.getName());
+        person.setSurname(personEntity.getSurname());
+        person.setEmail(personEntity.getEmail());
+        person.setPhoneNumber(personEntity.getPhoneNumber());
+        return person;
     }
 }
