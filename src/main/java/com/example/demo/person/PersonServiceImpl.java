@@ -34,6 +34,7 @@ public class PersonServiceImpl implements PersonService {
         return mapToPersonDetails(savedPersonEntity.getPersondetailsentity());
     }
 
+    //TODO Change the method to refer to first and last name only
     @Override
     public Person getNameAndSurname(UUID id, Map<String, Object> fields) {
         Optional<UserEntity> existingUser = userRepository.findById(id);
@@ -63,7 +64,7 @@ public class PersonServiceImpl implements PersonService {
     public List<Person> getPersons() {
         return repository.findAll().stream().map(this::mapToPerson).toList();
     }
-
+    //TODO Change the method to refer to first and last name only
     @Override
     public Person updatePerson(UUID id, UpdatePerson updatePerson) {
         PersonEntity existingPerson = repository.findById(id).get();

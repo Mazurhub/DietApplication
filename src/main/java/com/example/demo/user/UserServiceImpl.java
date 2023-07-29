@@ -20,6 +20,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository repository;
     private final PersonRepository personRepository;
 
+    //TODO Create method to login by password and userName
+
     @Override
     public User createUser(CreateUser createUser) {
         // Tworzymy nowego użytkownika
