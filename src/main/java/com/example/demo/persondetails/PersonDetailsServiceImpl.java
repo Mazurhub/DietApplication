@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+
 
 @RequiredArgsConstructor
 @Service
@@ -21,6 +21,7 @@ public class PersonDetailsServiceImpl implements PersonDetailsService {
     @Override
     public PersonDetails createPersonDetails(CreatePersonDetails createPersonDetails) {
         PersonDetailsEntity personDetailsEntity = mapToPersonDetailsEntity(createPersonDetails);
+        personDetailsEntity.setId(UUID.randomUUID());
         PersonDetailsEntity savedPersonDetailsEntity = repository.save(personDetailsEntity);
         return mapToPersonDetails(savedPersonDetailsEntity);
     }

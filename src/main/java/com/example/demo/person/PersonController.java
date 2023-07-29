@@ -1,7 +1,8 @@
 package com.example.demo.person;
 
+import com.example.demo.persondetails.CreatePersonDetails;
+import com.example.demo.persondetails.PersonDetails;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,10 @@ public class PersonController {
     @PostMapping
     public Person createPerson(@RequestBody CreatePerson createPerson) {
         return service.createPerson(createPerson);
+    }
+    @PostMapping("/details/{id}")
+    public PersonDetails addPersonDetails(@PathVariable UUID id, @RequestBody CreatePersonDetails createPersonDetails) {
+        return service.addPersonDetails(id, createPersonDetails);
     }
     @GetMapping
     @RequestMapping("/{id}")

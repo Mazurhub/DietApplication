@@ -16,4 +16,6 @@ public class Person {
     private UUID id;
     private String name;
     private String surname;
+    private String mail;
+    private Integer phoneNumber;
 }

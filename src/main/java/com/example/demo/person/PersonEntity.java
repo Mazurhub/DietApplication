@@ -1,6 +1,6 @@
 package com.example.demo.person;
 
-import com.example.demo.person.email.Email;
+import com.example.demo.persondetails.PersonDetailsEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,19 +19,12 @@ public class PersonEntity {
     private UUID id;
     private String name;
     private String surname;
+    private String mail;
+    private Integer phoneNumber;
 
-    @OneToOne
-    @JoinColumn(name = "email_id", referencedColumnName = "id")
-    private Email email;
+    @OneToOne(cascade = CascadeType.ALL )
+    @JoinColumn(name = "persondetailsentity_id", referencedColumnName = "id")
+    private PersonDetailsEntity persondetailsentity;
 
-// Comement TODO Caschade Type
-
-    public Email getEmail() {
-        return email;
-    }
-
-    public void setEmail(Email email) {
-        this.email = email;
-    }
 }
 

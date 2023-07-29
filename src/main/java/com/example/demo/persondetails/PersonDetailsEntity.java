@@ -1,12 +1,13 @@
 package com.example.demo.persondetails;
 
+import com.example.demo.person.PersonEntity;
 import com.example.demo.persondetails.DietInformation.DietInformation;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -22,7 +23,6 @@ public class PersonDetailsEntity {
     private Double height;
     private Integer age;
     private String sex;
-    private LocalDate measurementDate;
     private double bmi;
     private double ppm;
     private double cpm;
@@ -34,4 +34,7 @@ public class PersonDetailsEntity {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "dietinformation_id", referencedColumnName = "id")
     private DietInformation dietinformation;
+
+    @OneToOne(mappedBy = "persondetailsentity")
+    private PersonEntity personEntity;
 }

@@ -23,7 +23,6 @@ public class PersonDetails {
     private Double height;
     private Integer age;
     private String sex;
-    private LocalDate measurementDate;
     private double bmi;
     private double ppm;
     private double cpm;

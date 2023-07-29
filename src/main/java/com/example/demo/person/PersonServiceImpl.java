@@ -1,5 +1,8 @@
 package com.example.demo.person;
 
+import com.example.demo.persondetails.CreatePersonDetails;
+import com.example.demo.persondetails.PersonDetails;
+import com.example.demo.persondetails.PersonDetailsEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
@@ -21,6 +24,18 @@ public class PersonServiceImpl implements PersonService {
         PersonEntity personEntity = mapToPersonEntity(createPerson);
         PersonEntity savedPersonEntity = repository.save(personEntity);
         return mapToPerson(savedPersonEntity);
+    }
+
+    @Override
+    public PersonDetails addPersonDetails(UUID id, CreatePersonDetails createPersonDetails) {
+        PersonEntity personEntity = repository.findById(id).get();
+
+        PersonDetailsEntity personDetailsEntity = mapToPersonDetailsEntity(createPersonDetails);
+        personDetailsEntity.setId(UUID.randomUUID());
+        personEntity.setPersondetailsentity(personDetailsEntity);
+
+        PersonEntity savedPersonEntity = repository.save(personEntity);
+        return mapToPersonDetails(savedPersonEntity.getPersondetailsentity());
     }
 
     @Override
@@ -68,6 +83,8 @@ public class PersonServiceImpl implements PersonService {
         personEntity.setId(UUID.randomUUID());
         personEntity.setName(createPerson.getName());
         personEntity.setSurname(createPerson.getSurname());
+        personEntity.setMail(createPerson.getMail());
+        personEntity.setPhoneNumber(createPerson.getPhoneNumber());
         return personEntity;
     }
 
@@ -76,6 +93,30 @@ public class PersonServiceImpl implements PersonService {
         person.setId(personEntity.getId());
         person.setName(personEntity.getName());
         person.setSurname(personEntity.getSurname());
+        person.setMail(personEntity.getMail());
+        person.setPhoneNumber(personEntity.getPhoneNumber());
         return person;
+    }
+
+    private PersonDetailsEntity mapToPersonDetailsEntity(CreatePersonDetails createPersonDetails) {
+        PersonDetailsEntity personDetailsEntity = new PersonDetailsEntity();
+        personDetailsEntity.setId(UUID.randomUUID());
+        personDetailsEntity.setAge(createPersonDetails.getAge());
+        personDetailsEntity.setWeight(createPersonDetails.getWeight());
+        personDetailsEntity.setHeight(createPersonDetails.getHeight());
+        personDetailsEntity.setSex(createPersonDetails.getSex());
+        personDetailsEntity.setEnumPalCoefficient(createPersonDetails.getEnumPalCoefficient());
+        return personDetailsEntity;
+    }
+    private PersonDetails mapToPersonDetails(PersonDetailsEntity personDetailsEntity) {
+        PersonDetails personDetails = new PersonDetails();
+        personDetails.setId(personDetailsEntity.getId());
+        personDetails.setAge(personDetailsEntity.getAge());
+        personDetails.setWeight(personDetailsEntity.getWeight());
+        personDetails.setHeight(personDetailsEntity.getHeight());
+        personDetails.setSex(personDetailsEntity.getSex());
+        personDetails.setEnumPalCoefficient(personDetailsEntity.getEnumPalCoefficient());
+        personDetails.setBmi(personDetailsEntity.getBmi());
+        return personDetails;
     }
 }
