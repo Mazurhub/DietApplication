@@ -134,7 +134,7 @@ public class PersonDetailsServiceImpl implements PersonDetailsService {
         dietInformation.setFat(roundedFatPerGram);
         personDetailsEntity.setDietinformation(dietInformation);
 
-        Double CarbsKcal = (cpmValue / 100) * 70; //procentowy udział w diecie
+        Double CarbsKcal = (cpmValue / 100) * 60; //procentowy udział w diecie
         Double CarbsPerGram = CarbsKcal / 4; //4 kcal na gram węglowodanów
 
         BigDecimal bigDecimalCarbs = BigDecimal.valueOf(CarbsPerGram).setScale(2, RoundingMode.HALF_UP);

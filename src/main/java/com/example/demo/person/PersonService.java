@@ -2,7 +2,6 @@ package com.example.demo.person;
 
 import com.example.demo.persondetails.CreatePersonDetails;
 import com.example.demo.persondetails.PersonDetails;
-import com.example.demo.user.User;
 
 import java.util.List;
 import java.util.Map;
