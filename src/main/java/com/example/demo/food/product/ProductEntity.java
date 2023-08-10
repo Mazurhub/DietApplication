@@ -1,13 +1,13 @@
 package com.example.demo.food.product;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.demo.food.xmeal.MealEntity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -16,7 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProductEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private double productWeight;
@@ -24,6 +24,9 @@ public class ProductEntity {
     private double proteins;
     private double fats;
     private double carbs;
+
+    @ManyToMany(mappedBy = "products")
+    private List<MealEntity> meals;
 
     public ProductEntity(String name, double kcal, double productWeight, double proteins, double fats, double carbs) {
         this.name = name;

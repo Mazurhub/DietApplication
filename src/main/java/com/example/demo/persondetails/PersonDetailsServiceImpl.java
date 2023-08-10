@@ -1,12 +1,16 @@
 package com.example.demo.persondetails;
 
 import com.example.demo.persondetails.DietInformation.DietInformation;
+import com.example.demo.persondetails.WeightAndHeightMeasurements.HeightMeasurementsEntity;
+import com.example.demo.persondetails.WeightAndHeightMeasurements.MeasurementService;
+import com.example.demo.persondetails.WeightAndHeightMeasurements.WeightMeasurementsEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -16,12 +20,20 @@ import java.util.UUID;
 @Service
 public class PersonDetailsServiceImpl implements PersonDetailsService {
     private final PersonDetailsRepository repository;
+    private final MeasurementService measurementService;
 
 
     @Override
     public PersonDetails createPersonDetails(CreatePersonDetails createPersonDetails) {
         PersonDetailsEntity personDetailsEntity = mapToPersonDetailsEntity(createPersonDetails);
         personDetailsEntity.setId(UUID.randomUUID());
+
+        HeightMeasurementsEntity heightMeasurement = new HeightMeasurementsEntity(createPersonDetails.getHeight(), LocalDateTime.now(), personDetailsEntity);
+        WeightMeasurementsEntity weightMeasurement = new WeightMeasurementsEntity(createPersonDetails.getWeight(), LocalDateTime.now(), personDetailsEntity);
+
+        personDetailsEntity.addHeightMeasurement(heightMeasurement);
+        personDetailsEntity.addWeightMeasurement(weightMeasurement);
+
         PersonDetailsEntity savedPersonDetailsEntity = repository.save(personDetailsEntity);
         return mapToPersonDetails(savedPersonDetailsEntity);
     }
@@ -111,7 +123,7 @@ public class PersonDetailsServiceImpl implements PersonDetailsService {
         return personDetails;
     }
 
-    public ResponseEntity<List<Double>> calculateMacroelements(UUID id) {
+    public Macroelements calculateMacroelements(UUID id) {
         PersonDetailsEntity personDetailsEntity = repository.findById(id).get();
         DietInformation dietInformation = repository.findById(id).get().getDietinformation();
         Double cpmValue = dietInformation.getCpm();
@@ -157,6 +169,13 @@ public class PersonDetailsServiceImpl implements PersonDetailsService {
         personDetailsEntity.setHeight(createPersonDetails.getHeight());
         personDetailsEntity.setSex(createPersonDetails.getSex());
         personDetailsEntity.setEnumPalCoefficient(createPersonDetails.getEnumPalCoefficient());
+
+        // Dodaj poniższe linie, aby mapować pomiary wagi i wzrostu
+        HeightMeasurementsEntity heightMeasurement = new HeightMeasurementsEntity(createPersonDetails.getHeight(), LocalDateTime.now(), personDetailsEntity);
+        WeightMeasurementsEntity weightMeasurement = new WeightMeasurementsEntity(createPersonDetails.getWeight(), LocalDateTime.now(), personDetailsEntity);
+        personDetailsEntity.addHeightMeasurement(heightMeasurement);
+        personDetailsEntity.addWeightMeasurement(weightMeasurement);
+
         return personDetailsEntity;
     }
 
@@ -169,6 +188,9 @@ public class PersonDetailsServiceImpl implements PersonDetailsService {
         personDetails.setSex(personDetailsEntity.getSex());
         personDetails.setEnumPalCoefficient(personDetailsEntity.getEnumPalCoefficient());
         personDetails.setBmi(personDetailsEntity.getBmi());
+        // Dodaj mapowanie pomiary wagi i wzrostu do obiektu PersonDetails
+        personDetails.setHeightMeasurement(personDetailsEntity.getHeightMeasurement());
+        personDetails.setWeightMeasurement(personDetailsEntity.getWeightMeasurement());
         return personDetails;
     }
 }

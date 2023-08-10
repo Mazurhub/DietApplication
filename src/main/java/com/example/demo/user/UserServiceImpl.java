@@ -6,51 +6,39 @@ import com.example.demo.person.PersonEntity;
 import com.example.demo.person.PersonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ReflectionUtils;
 
-import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
-    private final UserRepository repository;
+    private final UserRepository userRepository;
     private final PersonRepository personRepository;
 
     //TODO Create method to login by password and userName
 
     @Override
     public User createUser(CreateUser createUser) {
-        // Tworzymy nowego użytkownika
         UserEntity userEntity = mapToUserEntity(createUser);
-        UserEntity savedUserEntity = repository.save(userEntity);
-
-        // Tworzymy nowy obiekt PersonDetails, który zawiera informacje o użytkowniku
+        UserEntity savedUserEntity = userRepository.save(userEntity);
         CreatePerson createPerson = new CreatePerson();
         createPerson.setEmail(createUser.getEmail());
         createPerson.setPhoneNumber(createUser.getPhoneNumber());
-
-        // Tworzymy osobę i przypisujemy ją do użytkownika
         PersonEntity personEntity = mapToPersonEntity(createPerson);
         personEntity.setUserEntity(savedUserEntity);
-        PersonEntity savedPersonEntity = personRepository.save(personEntity);
-
-        // Zwracamy użytkownika
         return mapToUser(savedUserEntity);
     }
 
     @Override
     public User getUser(UUID id) {
-        UserEntity userEntity = repository.findById(id).get();
+        UserEntity userEntity = userRepository.findById(id).get();
         return mapToUser(userEntity);
     }
 
     @Override
     public List<User> getUsers() {
-        return repository.findAll()
+        return userRepository.findAll()
                 .stream()
                 .map(this::mapToUser)
                 .toList();
@@ -58,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(UUID id, UpdateUser updatePerson) {
-        UserEntity existingUser = repository.findById(id).orElse(null);
+        UserEntity existingUser = userRepository.findById(id).orElse(null);
 
         if (existingUser != null) {
             existingUser.setUserName(updatePerson.getUserName());
@@ -72,15 +60,15 @@ public class UserServiceImpl implements UserService {
                 existingPerson.setPhoneNumber(updatePerson.getPhoneNumber());
                 personRepository.save(existingPerson);
             }
-            existingUser = repository.save(existingUser);
+            existingUser = userRepository.save(existingUser);
             return mapToUser(existingUser);
         }
         return null;
     }
     @Override
     public long deleteUser(UUID id) {
-        repository.deleteById(id);
-        return repository.count();
+        userRepository.deleteById(id);
+        return userRepository.count();
     }
 
     private UserEntity mapToUserEntity(CreateUser createUser) {
@@ -105,21 +93,8 @@ public class UserServiceImpl implements UserService {
 
     private PersonEntity mapToPersonEntity(CreatePerson createPerson) {
         PersonEntity personEntity = new PersonEntity();
-        personEntity.setId(UUID.randomUUID());
-        personEntity.setName(createPerson.getName());
-        personEntity.setSurname(createPerson.getSurname());
         personEntity.setEmail(createPerson.getEmail());
         personEntity.setPhoneNumber(createPerson.getPhoneNumber());
         return personEntity;
-    }
-
-    private Person mapToPerson(PersonEntity personEntity) {
-        Person person = new Person();
-        person.setId(personEntity.getId());
-        person.setName(personEntity.getName());
-        person.setSurname(personEntity.getSurname());
-        person.setEmail(personEntity.getEmail());
-        person.setPhoneNumber(personEntity.getPhoneNumber());
-        return person;
     }
 }

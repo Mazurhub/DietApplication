@@ -11,7 +11,7 @@ public interface PersonDetailsService {
     PersonDetails calculateBMI(UUID id);
     PersonDetails calculatePPM(UUID id);
     PersonDetails calculateCPM(UUID id);
-    ResponseEntity<List<Double>> calculateMacroelements(UUID id);
+    Macroelements calculateMacroelements(UUID id);
     PersonDetails getPersonDetails(UUID id);
 
 
