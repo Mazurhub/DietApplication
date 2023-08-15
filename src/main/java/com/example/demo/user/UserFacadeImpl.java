@@ -41,7 +41,8 @@ class UserFacadeImpl implements UserFacade {
 
     @Override
     public User updateUser(UUID id, UpdateUser updateUser) {
-        return updateUserUseCase.execute(id, updateUser);
+        updateUserUseCase.execute(id, updateUser);
+        return getUserById(id);
     }
 
     @Override
