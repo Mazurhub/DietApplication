@@ -6,6 +6,5 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-//pozwala nam na proste korzystanie z baz danych
 public interface UserRepository extends JpaRepository<UserEntity, UUID> {
 }
