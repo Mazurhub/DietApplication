@@ -16,10 +16,7 @@ public class GetUsersUseCase {
     List<User> execute() {
         return userRepository.findAll()
                 .stream()
-                .map(this::mapToUser)
+                .map(UserMapper::mapToDTO)
                 .toList();
-    }
-    private User mapToUser(UserEntity userEntity) {
-        return new User(userEntity.getId(), userEntity.getUserName(), userEntity.getPassword(), userEntity.getEmail(), userEntity.getPhoneNumber());
     }
 }
