@@ -1,6 +1,5 @@
 package com.example.demo.persondetails;
 
-import com.example.demo.person.PersonEntity;
 import com.example.demo.persondetails.DietInformation.DietInformation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -35,6 +34,4 @@ public class PersonDetailsEntity {
     @JoinColumn(name = "dietinformation_id", referencedColumnName = "id")
     private DietInformation dietinformation;
 
-    @OneToOne(mappedBy = "persondetailsentity")
-    private PersonEntity personEntity;
 }

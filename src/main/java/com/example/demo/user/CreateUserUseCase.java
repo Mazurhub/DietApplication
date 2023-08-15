@@ -19,6 +19,8 @@ public class CreateUserUseCase {
         var savedUserEntity = new UserEntity();
         savedUserEntity.setId(UUID.randomUUID());
         savedUserEntity.setUserName(createUser.userName());
+        savedUserEntity.setFirstName(createUser.firstName());
+        savedUserEntity.setLastName(createUser.lastName());
         savedUserEntity.setPassword(createUser.password());
         savedUserEntity.setEmail(createUser.email());
         savedUserEntity.setPhoneNumber(createUser.phoneNumber());

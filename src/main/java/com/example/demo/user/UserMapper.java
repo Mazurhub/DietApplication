@@ -7,6 +7,8 @@ public class UserMapper {
         return new User(
                 userEntity.getId(),
                 userEntity.getUserName(),
+                userEntity.getFirstName(),
+                userEntity.getLastName(),
                 userEntity.getPassword(),
                 userEntity.getEmail(),
                 userEntity.getPhoneNumber()

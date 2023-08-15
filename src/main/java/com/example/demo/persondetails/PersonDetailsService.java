@@ -1,6 +1,6 @@
 package com.example.demo.persondetails;
 
-import com.example.demo.person.Person;
+
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;

@@ -14,6 +14,13 @@ public class GetUserUseCase {
     }
     User execute (UUID id){
         var userEntity = userRepository.findById(id).get();
-        return new User(userEntity.getId(), userEntity.getUserName(), userEntity.getPassword(), userEntity.getEmail(), userEntity.getPhoneNumber());
+        return new User(
+                userEntity.getId(),
+                userEntity.getUserName(),
+                userEntity.getFirstName(),
+                userEntity.getLastName(),
+                userEntity.getPassword(),
+                userEntity.getEmail(),
+                userEntity.getPhoneNumber());
     }
 }
