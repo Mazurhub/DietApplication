@@ -17,7 +17,7 @@ public class CreateUserUseCase {
 
     UUID execute(CreateUser createUser) {
         var savedUserEntity = new UserEntity();
-        savedUserEntity.setId(UUID.randomUUID());
+        savedUserEntity.setUserId(UUID.randomUUID());
         savedUserEntity.setUserName(createUser.userName());
         savedUserEntity.setFirstName(createUser.firstName());
         savedUserEntity.setLastName(createUser.lastName());
@@ -26,7 +26,7 @@ public class CreateUserUseCase {
         savedUserEntity.setPhoneNumber(createUser.phoneNumber());
 
         var userEntity = userRepository.save(savedUserEntity);
-        return userEntity.getId();
+        return userEntity.getUserId();
     }
 
 

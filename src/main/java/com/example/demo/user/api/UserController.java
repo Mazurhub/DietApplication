@@ -23,10 +23,10 @@ public class UserController {
         return userFacade.createUser(createUser);
     }
 
-    @RequestMapping("/{id}")
+    @RequestMapping("/{userId}")
     @GetMapping
-    User getUser(@PathVariable UUID id){
-        return userFacade.getUserById(id);
+    User getUser(@PathVariable UUID userId){
+        return userFacade.getUserById(userId);
     }
 
     @GetMapping
@@ -34,13 +34,13 @@ public class UserController {
         return userFacade.getUsers();
     }
 
-    @PutMapping("/{id}")
-    public User updateUser(@PathVariable UUID id, @RequestBody UpdateUser updateUser) {
-        return userFacade.updateUser(id, updateUser);
+    @PutMapping("/{userId}")
+    public User updateUser(@PathVariable UUID userId, @RequestBody UpdateUser updateUser) {
+        return userFacade.updateUser(userId, updateUser);
     }
 
-    @DeleteMapping("/{id}")
-    public long deleteUser(@PathVariable UUID id) {
-        return userFacade.deleteUser(id);
+    @DeleteMapping("/{userId}")
+    public long deleteUser(@PathVariable UUID userId) {
+        return userFacade.deleteUser(userId);
     }
 }

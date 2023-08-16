@@ -11,8 +11,8 @@ public class DeleteUserUseCase {
         this.userRepository = userRepository;
     }
 
-    Long execute (UUID id){
-        userRepository.deleteById(id);
+    Long execute (UUID userId){
+        userRepository.deleteById(userId);
         return userRepository.count();
     }
 }

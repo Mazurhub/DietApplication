@@ -36,7 +36,7 @@ public class UpdateUserUseCase {
             existingUser.setPhoneNumber(updateUser.phoneNumber());
         }
         existingUser = userRepository.save(existingUser);
-        return existingUser.getId();
+        return existingUser.getUserId();
 
     }
 }

@@ -10,11 +10,11 @@ import java.util.UUID;
 public interface UserFacade {
     User createUser(CreateUser createUser);
 
-    User getUserById(UUID id);
+    User getUserById(UUID userId);
 
     List<User> getUsers();
 
-    User updateUser(UUID id, UpdateUser updateUser);
+    User updateUser(UUID userId, UpdateUser updateUser);
 
-    long deleteUser(UUID id);
+    long deleteUser(UUID userId);
 }
