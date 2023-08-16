@@ -2,7 +2,7 @@ package com.example.demo.user;
 import com.example.demo.user.api.dto.User;
 
 
-public class UserMapper {
+class UserMapper {
     static User mapToDTO(UserEntity userEntity) {
         return new User(
                 userEntity.getUserId(),

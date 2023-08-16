@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class GetUsersUseCase {
+class GetUsersUseCase {
     private final UserRepository userRepository;
 
     GetUsersUseCase(UserRepository userRepository) {

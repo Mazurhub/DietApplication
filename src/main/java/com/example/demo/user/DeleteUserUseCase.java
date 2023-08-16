@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import java.util.UUID;
 
 @Component
-public class DeleteUserUseCase {
+class DeleteUserUseCase {
     private final UserRepository userRepository;
 
     DeleteUserUseCase(UserRepository userRepository) {

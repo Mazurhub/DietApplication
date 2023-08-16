@@ -3,7 +3,6 @@ package com.example.demo.user.api;
 import com.example.demo.user.api.dto.CreateUser;
 import com.example.demo.user.api.dto.UpdateUser;
 import com.example.demo.user.api.dto.User;
-import lombok.Getter;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/users")
-public class UserController {
+class UserController {
     private final UserFacade userFacade;
 
     UserController(UserFacade userFacade) {

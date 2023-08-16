@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Transactional
 @Component
-public class CreateUserUseCase {
+class CreateUserUseCase {
     private final UserRepository userRepository;
 
     CreateUserUseCase(UserRepository userRepository) {
