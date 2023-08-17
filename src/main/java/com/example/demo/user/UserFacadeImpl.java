@@ -27,12 +27,12 @@ class UserFacadeImpl implements UserFacade {
 
     @Override
     public User createUser(CreateUser createUser) {
-        var id = createUserUseCase.execute(createUser);
-        return getUserById(id);
+        var userId = createUserUseCase.execute(createUser);
+        return getUserById(userId);
     }
 
-    public User getUserById(UUID id){
-        return getUserUseCase.execute(id);
+    public User getUserById(UUID userId){
+        return getUserUseCase.execute(userId);
     }
 
     public List<User> getUsers() {
@@ -40,9 +40,9 @@ class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public User updateUser(UUID id, UpdateUser updateUser) {
-        updateUserUseCase.execute(id, updateUser);
-        return getUserById(id);
+    public User updateUser(UUID userId, UpdateUser updateUser) {
+        updateUserUseCase.execute(userId, updateUser);
+        return getUserById(userId);
     }
 
     @Override
