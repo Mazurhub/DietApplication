@@ -1,7 +1,9 @@
 package com.example.demo.person_measurement;
 
 import com.example.demo.person_measurement.api.dto.PhysicalActivityLevel;
+import org.springframework.stereotype.Component;
 
+@Component
 class CalculatePersonHealthMetric {
 
     static double calculateBMI(double weight, double height) {
