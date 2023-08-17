@@ -1,6 +1,7 @@
-package com.example.demo.persondetails;
+/*
+package com.example.demo.person_measurement;
 
-import com.example.demo.persondetails.DietInformation.DietInformation;
+import com.example.demo.person_measurement.DietInformation.DietInformation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Service
 public class PersonDetailsServiceImpl implements PersonDetailsService {
-    private final PersonDetailsRepository repository;
+    private final PersonDataRepository repository;
 
 
     @Override
@@ -172,3 +173,4 @@ public class PersonDetailsServiceImpl implements PersonDetailsService {
         return personDetails;
     }
 }
+*/

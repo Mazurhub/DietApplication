@@ -5,17 +5,17 @@ import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 @Component
-public class GetUserUseCase {
+class GetUserUseCase {
 
     private final UserRepository userRepository;
 
     GetUserUseCase(UserRepository userRepository){
         this.userRepository = userRepository;
     }
-    User execute (UUID id){
-        var userEntity = userRepository.findById(id).get();
+    User execute (UUID userId){
+        var userEntity = userRepository.findById(userId).get();
         return new User(
-                userEntity.getId(),
+                userEntity.getUserId(),
                 userEntity.getUserName(),
                 userEntity.getFirstName(),
                 userEntity.getLastName(),
