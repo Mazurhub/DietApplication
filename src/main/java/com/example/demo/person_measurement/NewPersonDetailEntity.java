@@ -1,6 +1,7 @@
 package com.example.demo.person_measurement;
 
 import com.example.demo.person_measurement.api.dto.PhysicalActivityLevel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +31,7 @@ public class NewPersonDetailEntity {
     private double fat;
     private double carbs;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "person_history_id")
     private PersonDetailsHistoryEntity personDetailsHistory;

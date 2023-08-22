@@ -1,5 +1,6 @@
 package com.example.demo.person_measurement;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +18,7 @@ class PersonDetailsHistoryEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID personDetailHistoryId;
     private UUID userId;
+    @JsonIgnore
     @OneToMany(
             mappedBy = "personDetailsHistory",
             cascade = CascadeType.ALL,

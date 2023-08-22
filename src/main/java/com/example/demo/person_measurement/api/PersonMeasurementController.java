@@ -1,9 +1,11 @@
 package com.example.demo.person_measurement.api;
 
+import com.example.demo.person_measurement.NewPersonDetailEntity;
 import com.example.demo.person_measurement.api.dto.CreateNewPersonDetail;
 import com.example.demo.person_measurement.api.dto.NewPersonDetail;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -21,5 +23,9 @@ class PersonMeasurementController {
     ApiResponse addMeasurement(@PathVariable UUID userId, @RequestBody CreateNewPersonDetail createNewPersonDetail) {
         NewPersonDetail newPersonDetail = personMeasurementFacade.addNewPersonDetail(userId, createNewPersonDetail);
         return new ApiResponse("success", "Successfully added new values");
+    }
+    @GetMapping("/{userId}")
+    List<NewPersonDetail> getMeasurementsByUserId(@PathVariable UUID userId) {
+        return personMeasurementFacade.getPersonDetailsHistory(userId);
     }
 }

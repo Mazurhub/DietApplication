@@ -5,10 +5,17 @@ import java.util.UUID;
 
 public record NewPersonDetail(
         UUID userId,
+        UUID personDetailId,
+        LocalDate measurementDate,
         double weight,
         double height,
         int age,
         String sex,
-        PhysicalActivityLevel palCoefficient,
-        LocalDate measurementDate) {
+        double palCoefficient,
+        double bmiValue,
+        double ppmValue,
+        double cpmValue,
+        double proteinPerGram,
+        double fatPerGram,
+        double carbsPerGram) {
 }
