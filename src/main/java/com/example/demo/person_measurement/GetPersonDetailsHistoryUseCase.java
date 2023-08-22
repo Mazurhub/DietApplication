@@ -21,9 +21,9 @@ class GetPersonDetailsHistoryUseCase{
         Optional<PersonDetailsHistoryEntity> historyOptional = personDetailsHistoryRepository.findByUserId(userId);
 
         PersonDetailsHistoryEntity history = historyOptional.get();
-        List<NewPersonDetailEntity> entityList = history.getNewPersonDetail();
+        List<NewPersonDetailEntity> newPersonDetailEntityList = history.getNewPersonDetail();
 
-        return entityList.stream()
+        return newPersonDetailEntityList.stream()
                     .map(NewPersonDetailMapper::mapToDTO)
                     .collect(Collectors.toList());
     }
