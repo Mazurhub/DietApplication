@@ -1,5 +1,7 @@
 package com.example.demo.user;
 
+import com.example.demo.person_measurement.api.PersonMeasurementFacade;
+import com.example.demo.person_measurement.api.dto.CreatePersonDetailsHistory;
 import com.example.demo.user.api.dto.CreateUser;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,9 +12,11 @@ import java.util.UUID;
 @Component
 class CreateUserUseCase {
     private final UserRepository userRepository;
+    private final PersonMeasurementFacade personMeasurementFacade;
 
-    CreateUserUseCase(UserRepository userRepository) {
+    CreateUserUseCase(UserRepository userRepository, PersonMeasurementFacade personMeasurementFacade) {
         this.userRepository = userRepository;
+        this.personMeasurementFacade = personMeasurementFacade;
     }
 
     UUID execute(CreateUser createUser) {
@@ -26,6 +30,21 @@ class CreateUserUseCase {
         savedUserEntity.setPhoneNumber(createUser.phoneNumber());
 
         var userEntity = userRepository.save(savedUserEntity);
+        personMeasurementFacade.createPersonDetailsHistoryByUserId(
+                new CreatePersonDetailsHistory(
+                        userEntity.getUserId(),
+                        createUser.weight(),
+                        createUser.height(),
+                        createUser.age(),
+                        createUser.sex(),
+                        createUser.palCoefficient(),
+                        createUser.bmi(),
+                        createUser.ppm(),
+                        createUser.cpm(),
+                        createUser.protein(),
+                        createUser.fat(),
+                        createUser.carbs(),
+                        createUser.measurementDate()));
         return userEntity.getUserId();
     }
 
