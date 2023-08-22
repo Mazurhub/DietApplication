@@ -32,19 +32,7 @@ class CreateUserUseCase {
         var userEntity = userRepository.save(savedUserEntity);
         personMeasurementFacade.createPersonDetailsHistoryByUserId(
                 new CreatePersonDetailsHistory(
-                        userEntity.getUserId(),
-                        createUser.weight(),
-                        createUser.height(),
-                        createUser.age(),
-                        createUser.sex(),
-                        createUser.palCoefficient(),
-                        createUser.bmi(),
-                        createUser.ppm(),
-                        createUser.cpm(),
-                        createUser.protein(),
-                        createUser.fat(),
-                        createUser.carbs(),
-                        createUser.measurementDate()));
+                        userEntity.getUserId()));
         return userEntity.getUserId();
     }
 

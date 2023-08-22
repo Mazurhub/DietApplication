@@ -17,13 +17,6 @@ public record CreateUser(String userName,
                          double height,
                          int age,
                          String sex,
-                         PhysicalActivityLevel palCoefficient,
-                         double bmi,
-                         double ppm,
-                         double cpm,
-                         double protein,
-                         double fat,
-                         double carbs,
-                         LocalDate measurementDate) {
+                         PhysicalActivityLevel palCoefficient){
 }
 
