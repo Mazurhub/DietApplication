@@ -15,11 +15,13 @@ class PersonMeasurementFacadeImpl implements PersonMeasurementFacade {
     private final CreatePersonDetailsHistoryUseCase createPersonDetailsHistoryUseCase;
     private final AddNewPersonDetailUseCase addNewPersonDetailUseCase;
     private final GetPersonDetailsHistoryUseCase getPersonDetailsHistoryUseCase;
+    private final GetCurrentPersonDetailByUserIdUseCase getCurrentPersonDetailByUserIdUseCase;
 
-    PersonMeasurementFacadeImpl(CreatePersonDetailsHistoryUseCase createPersonDetailsHistoryUseCase, AddNewPersonDetailUseCase addNewPersonDetailUseCase, GetPersonDetailsHistoryUseCase getPersonDetailsHistoryUseCase) {
+    PersonMeasurementFacadeImpl(CreatePersonDetailsHistoryUseCase createPersonDetailsHistoryUseCase, AddNewPersonDetailUseCase addNewPersonDetailUseCase, GetPersonDetailsHistoryUseCase getPersonDetailsHistoryUseCase, GetCurrentPersonDetailByUserIdUseCase getCurrentPersonDetailByUserIdUseCase) {
         this.createPersonDetailsHistoryUseCase = createPersonDetailsHistoryUseCase;
         this.addNewPersonDetailUseCase = addNewPersonDetailUseCase;
         this.getPersonDetailsHistoryUseCase = getPersonDetailsHistoryUseCase;
+        this.getCurrentPersonDetailByUserIdUseCase = getCurrentPersonDetailByUserIdUseCase;
     }
 
     @Override
@@ -36,6 +38,11 @@ class PersonMeasurementFacadeImpl implements PersonMeasurementFacade {
     @Override
     public List<NewPersonDetail> getPersonDetailsHistory(UUID userId) {
         return getPersonDetailsHistoryUseCase.execute(userId);
+    }
+
+    @Override
+    public NewPersonDetail getCurrentPersonDetailByUserId(UUID userId) {
+        return getCurrentPersonDetailByUserIdUseCase.execute(userId);
     }
 
 }

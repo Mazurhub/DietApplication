@@ -28,4 +28,8 @@ class PersonMeasurementController {
     List<NewPersonDetail> getMeasurementsByUserId(@PathVariable UUID userId) {
         return personMeasurementFacade.getPersonDetailsHistory(userId);
     }
+    @GetMapping("/current/{userId}")
+    public NewPersonDetail getCurrentPersonDetail(@PathVariable UUID userId) {
+        return personMeasurementFacade.getCurrentPersonDetailByUserId(userId);
+    }
 }

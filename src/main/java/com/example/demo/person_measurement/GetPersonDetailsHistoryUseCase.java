@@ -3,7 +3,6 @@ package com.example.demo.person_measurement;
 import com.example.demo.person_measurement.api.dto.NewPersonDetail;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

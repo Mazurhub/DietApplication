@@ -12,4 +12,5 @@ public interface PersonMeasurementFacade {
     void createPersonDetailsHistoryByUserId(CreatePersonDetailsHistory createPersonDetailsHistory);
     NewPersonDetail addNewPersonDetail(UUID userId, CreateNewPersonDetail createNewPersonDetail);
     List<NewPersonDetail> getPersonDetailsHistory(UUID userId);
+    NewPersonDetail getCurrentPersonDetailByUserId(UUID userId);
 }
