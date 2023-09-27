@@ -10,7 +10,7 @@ public class ProductServiceImpl implements ProductService{
     private final MyProductRepository repository;
 
     @Override
-    @Transactional // Dodaj adnotację @Transactional, aby zapewnić poprawne zapisanie produktów do bazy danych
+    @Transactional
     public Product createProduct(CreateProduct createProduct) {
         ProductEntity productEntity = mapToProductEntity(createProduct);
         ProductEntity savedProductEntity = repository.save(productEntity);
