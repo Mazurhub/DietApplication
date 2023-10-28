@@ -23,7 +23,7 @@ class AddNewPersonDetailUseCase {
         Optional<PersonDetailsHistoryEntity> historyOptional = personDetailsHistoryRepository.findByUserId(userId);
         PersonDetailsHistoryEntity personDetailsHistory = historyOptional.get();
 
-        NewPersonDetailEntity newPersonDetailEntity = new NewPersonDetailEntity(
+        PersonDetailEntity personDetailEntity = new PersonDetailEntity(
                 createNewPersonDetail.weight(),
                 createNewPersonDetail.height(),
                 createNewPersonDetail.age(),
@@ -33,9 +33,9 @@ class AddNewPersonDetailUseCase {
                 personDetailsHistory
         );
 
-        calculatePersonHealthMetricUseCase.calculateMetrics(createNewPersonDetail, newPersonDetailEntity);
+        calculatePersonHealthMetricUseCase.calculateMetrics(createNewPersonDetail, personDetailEntity);
 
-        personDetailsHistory.getNewPersonDetail().add(newPersonDetailEntity);
+        personDetailsHistory.getNewPersonDetail().add(personDetailEntity);
         personDetailsHistoryRepository.save(personDetailsHistory);
     }
 }

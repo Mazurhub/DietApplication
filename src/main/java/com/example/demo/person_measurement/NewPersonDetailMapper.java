@@ -5,22 +5,22 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class NewPersonDetailMapper {
-    static NewPersonDetail mapToDTO(NewPersonDetailEntity newPersonDetailEntity) {
+    static NewPersonDetail mapToDTO(PersonDetailEntity personDetailEntity) {
         return new NewPersonDetail(
-                newPersonDetailEntity.getPersonDetailsHistory().getUserId(),
-                newPersonDetailEntity.getPersonDetailId(),
-                newPersonDetailEntity.getMeasurementDate(),
-                newPersonDetailEntity.getWeight(),
-                newPersonDetailEntity.getHeight(),
-                newPersonDetailEntity.getAge(),
-                newPersonDetailEntity.getSex(),
-                newPersonDetailEntity.getPalCoefficient().getPalCoefficient(),
-                newPersonDetailEntity.getBmi(),
-                newPersonDetailEntity.getPpm(),
-                newPersonDetailEntity.getCpm(),
-                newPersonDetailEntity.getProtein(),
-                newPersonDetailEntity.getFat(),
-                newPersonDetailEntity.getCarbs()
+                personDetailEntity.getPersonDetailsHistory().getUserId(),
+                personDetailEntity.getPersonDetailId(),
+                personDetailEntity.getMeasurementDate(),
+                personDetailEntity.getWeight(),
+                personDetailEntity.getHeight(),
+                personDetailEntity.getAge(),
+                personDetailEntity.getSex(),
+                personDetailEntity.getPalCoefficient().getPalCoefficient(),
+                personDetailEntity.getBmi(),
+                personDetailEntity.getPpm(),
+                personDetailEntity.getCpm(),
+                personDetailEntity.getProtein(),
+                personDetailEntity.getFat(),
+                personDetailEntity.getCarbs()
         );
     }
 }

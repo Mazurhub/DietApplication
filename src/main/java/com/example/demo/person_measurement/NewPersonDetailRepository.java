@@ -13,15 +13,17 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-interface NewPersonDetailRepository extends JpaRepository<NewPersonDetailEntity, UUID> {
-    @Query("SELECT npd FROM NewPersonDetailEntity npd " +
+interface NewPersonDetailRepository extends JpaRepository<PersonDetailEntity, UUID> {
+    @Query("SELECT npd FROM PersonDetailEntity npd " +
             "WHERE npd.personDetailsHistory.userId = :userId " +
             "ORDER BY npd.measurementDate DESC")
-    List<NewPersonDetailEntity> findLatestByUserId(@Param("userId") UUID userId, Pageable pageable);
+    List<PersonDetailEntity> findLatestByUserId(@Param("userId") UUID userId, Pageable pageable);
 
-    default Optional<NewPersonDetailEntity> findLatestByUserId(@Param("userId") UUID userId) {
+    default Optional<PersonDetailEntity> findLatestByUserId(@Param("userId") UUID userId) {
         Pageable pageable = PageRequest.of(0, 1, Sort.by(Sort.Order.desc("measurementDate")));
         return findLatestByUserId(userId, pageable).stream().findFirst();
     }
 }
+
+
 

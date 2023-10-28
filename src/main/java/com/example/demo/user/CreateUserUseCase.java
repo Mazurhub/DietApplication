@@ -35,8 +35,6 @@ class CreateUserUseCase {
                         userEntity.getUserId()));
         return userEntity.getUserId();
     }
-
-
 }
 
 

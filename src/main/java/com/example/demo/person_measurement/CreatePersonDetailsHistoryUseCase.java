@@ -18,6 +18,5 @@ class CreatePersonDetailsHistoryUseCase {
         var personDetailsHistory = new PersonDetailsHistoryEntity();
         personDetailsHistory.setUserId(createPersonDetailsHistory.userId());
         personDetailsHistoryRepository.save(personDetailsHistory);
-
     }
 }

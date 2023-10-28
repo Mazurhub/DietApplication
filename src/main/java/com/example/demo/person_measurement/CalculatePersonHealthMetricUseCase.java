@@ -12,7 +12,7 @@ class CalculatePersonHealthMetricUseCase {
         this.personDetailsHistoryRepository = personDetailsHistoryRepository;
     }
 
-    void calculateMetrics(CreateNewPersonDetail createNewPersonDetail, NewPersonDetailEntity newPersonDetailEntity) {
+    void calculateMetrics(CreateNewPersonDetail createNewPersonDetail, PersonDetailEntity personDetailEntity) {
         double bmi = CalculatePersonHealthMetric.calculateBMI(createNewPersonDetail.weight(), createNewPersonDetail.height());
         double ppm = CalculatePersonHealthMetric.calculatePPM(createNewPersonDetail.weight(), createNewPersonDetail.height(), createNewPersonDetail.age(), createNewPersonDetail.sex());
         double cpm = CalculatePersonHealthMetric.calculateCPM(ppm, createNewPersonDetail.palCoefficient());
@@ -20,12 +20,12 @@ class CalculatePersonHealthMetricUseCase {
         double fat = CalculatePersonHealthMetric.calculateFatPerGram(cpm);
         double carbs = CalculatePersonHealthMetric.calculateCarbsPerGram(cpm);
 
-        newPersonDetailEntity.setBmi(bmi);
-        newPersonDetailEntity.setPpm(ppm);
-        newPersonDetailEntity.setCpm(cpm);
-        newPersonDetailEntity.setProtein(protein);
-        newPersonDetailEntity.setFat(fat);
-        newPersonDetailEntity.setCarbs(carbs);
+        personDetailEntity.setBmi(bmi);
+        personDetailEntity.setPpm(ppm);
+        personDetailEntity.setCpm(cpm);
+        personDetailEntity.setProtein(protein);
+        personDetailEntity.setFat(fat);
+        personDetailEntity.setCarbs(carbs);
 
     }
 }

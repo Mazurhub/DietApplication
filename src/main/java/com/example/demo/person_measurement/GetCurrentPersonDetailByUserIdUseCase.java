@@ -20,7 +20,7 @@ public class GetCurrentPersonDetailByUserIdUseCase {
     }
 
     NewPersonDetail execute(UUID userId) {
-        Optional<NewPersonDetailEntity> latestDetailOptional = newPersonDetailRepository.findLatestByUserId(userId);
+        Optional<PersonDetailEntity> latestDetailOptional = newPersonDetailRepository.findLatestByUserId(userId);
         return latestDetailOptional.map(NewPersonDetailMapper::mapToDTO).get();
         }
     }

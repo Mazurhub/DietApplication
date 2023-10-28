@@ -10,11 +10,11 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Table(name = "NewPersonDetailEntity")
+@Table(name = "PersonDetailEntity")
 @Getter
 @Setter
 
-public class NewPersonDetailEntity {
+public class PersonDetailEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID personDetailId;
@@ -36,7 +36,7 @@ public class NewPersonDetailEntity {
     @JoinColumn(name = "person_history_id")
     private PersonDetailsHistoryEntity personDetailsHistory;
 
-    public NewPersonDetailEntity(double weight, double height, int age, String sex, PhysicalActivityLevel palCoefficient, LocalDate measurementDate, PersonDetailsHistoryEntity personDetailsHistory) {
+    public PersonDetailEntity(double weight, double height, int age, String sex, PhysicalActivityLevel palCoefficient, LocalDate measurementDate, PersonDetailsHistoryEntity personDetailsHistory) {
         this.weight = weight;
         this.height = height;
         this.age = age;
@@ -46,7 +46,7 @@ public class NewPersonDetailEntity {
         this.personDetailsHistory = personDetailsHistory;
     }
 
-    public NewPersonDetailEntity() {
+    public PersonDetailEntity() {
     }
 
     void setBmi(double bmi) {

@@ -1,6 +1,5 @@
 package com.example.demo.person_measurement.api;
 
-import com.example.demo.person_measurement.NewPersonDetailEntity;
 import com.example.demo.person_measurement.api.dto.CreateNewPersonDetail;
 import com.example.demo.person_measurement.api.dto.CreatePersonDetailsHistory;
 import com.example.demo.person_measurement.api.dto.NewPersonDetail;
