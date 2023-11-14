@@ -12,9 +12,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "PersonDetailEntity")
 @Getter
-@Setter
-
-public class PersonDetailEntity {
+class PersonDetailEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID personDetailId;

@@ -12,7 +12,7 @@ class CalculatePersonHealthMetric {
     static double calculatePPM(double weight, double height, int age, String sex) {
         double ppm = 0;
         if (sex.equals("Women")) {
-            ppm = 655.1 + (9.563 * weight + (1.85 * height) - (4.676 * age));
+            ppm = 655.1 + (9.563 * weight) + (1.85 * height) - (4.676 * age);
         } else if (sex.equals("Man")) {
             ppm = 66.5 + (13.75 * weight) + (5.003 * height) - (6.775 * age);
         } else {
