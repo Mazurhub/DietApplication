@@ -8,7 +8,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.UUID;
-@Component // tutaj + w klasach Usecase może być też rónież @Service
+
+@Component
 class UserFacadeImpl implements UserFacade {
 
     private final CreateUserUseCase createUserUseCase;
@@ -31,10 +32,12 @@ class UserFacadeImpl implements UserFacade {
         return getUserById(userId);
     }
 
-    public User getUserById(UUID userId){
+    @Override
+    public User getUserById(UUID userId) {
         return getUserUseCase.execute(userId);
     }
 
+    @Override
     public List<User> getUsers() {
         return getUsersUseCase.execute();
     }
