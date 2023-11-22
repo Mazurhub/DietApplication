@@ -34,12 +34,12 @@ class UserController {
     }
 
     @PutMapping("/{userId}")
-    public User updateUser(@PathVariable UUID userId, @RequestBody UpdateUser updateUser) {
+    User updateUser(@PathVariable UUID userId, @RequestBody UpdateUser updateUser) {
         return userFacade.updateUser(userId, updateUser);
     }
 
     @DeleteMapping("/{userId}")
-    public long deleteUser(@PathVariable UUID userId) {
+    long deleteUser(@PathVariable UUID userId) {
         return userFacade.deleteUser(userId);
     }
 }

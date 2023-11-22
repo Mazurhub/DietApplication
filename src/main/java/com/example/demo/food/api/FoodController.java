@@ -2,10 +2,13 @@ package com.example.demo.food.api;
 
 import com.example.demo.food.api.dto.CreateFood;
 import com.example.demo.food.api.dto.Food;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.demo.food.api.dto.UpdateFood;
+import com.example.demo.user.api.dto.UpdateUser;
+import com.example.demo.user.api.dto.User;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/food")
@@ -15,8 +18,24 @@ class FoodController {
     FoodController(FoodFacade foodFacade) {
         this.foodFacade = foodFacade;
     }
+
     @PostMapping
-    Food createFood(@RequestBody CreateFood createFood){
+    Food createFood(@RequestBody CreateFood createFood) {
         return foodFacade.createFood(createFood);
+    }
+
+    @RequestMapping("/{foodId}")
+    @GetMapping
+    Food getFood(@PathVariable UUID foodId) {
+        return foodFacade.getFoodById(foodId);
+    }
+
+    @GetMapping
+    List<Food> getFoods() {
+        return foodFacade.getFoods();
+    }
+    @PutMapping("/{foodId}")
+    Food updateFood(@PathVariable UUID foodId, @RequestBody UpdateFood updateFood) {
+        return foodFacade.updateFood(foodId, updateFood);
     }
 }
