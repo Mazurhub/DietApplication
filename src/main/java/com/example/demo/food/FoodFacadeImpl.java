@@ -15,20 +15,24 @@ class FoodFacadeImpl implements FoodFacade {
     private final GetFoodUseCase getFoodUseCase;
     private final GetFoodsUseCase getFoodsUseCase;
     private final UpdateFoodUseCase updateFoodUseCase;
+    private final DeleteFoodUseCase deleteFoodUseCase;
 
-    FoodFacadeImpl(CreateFoodUseCase createFoodUseCase, GetFoodUseCase getFoodUseCase, GetFoodsUseCase getFoodsUseCase, UpdateFoodUseCase updateFoodUseCase) {
+    FoodFacadeImpl(CreateFoodUseCase createFoodUseCase, GetFoodUseCase getFoodUseCase, GetFoodsUseCase getFoodsUseCase, UpdateFoodUseCase updateFoodUseCase, DeleteFoodUseCase deleteFoodUseCase) {
         this.createFoodUseCase = createFoodUseCase;
         this.getFoodUseCase = getFoodUseCase;
         this.getFoodsUseCase = getFoodsUseCase;
         this.updateFoodUseCase = updateFoodUseCase;
+        this.deleteFoodUseCase = deleteFoodUseCase;
     }
+
     @Override
-    public Food createFood(CreateFood createFood){
+    public Food createFood(CreateFood createFood) {
         UUID foodId = createFoodUseCase.execute(createFood);
         return getFoodById(foodId);
     }
+
     @Override
-    public Food getFoodById(UUID foodId){
+    public Food getFoodById(UUID foodId) {
         return getFoodUseCase.execute(foodId);
     }
 
@@ -39,7 +43,12 @@ class FoodFacadeImpl implements FoodFacade {
 
     @Override
     public Food updateFood(UUID foodId, UpdateFood updateFood) {
-        updateFoodUseCase.execute(foodId,updateFood);
+        updateFoodUseCase.execute(foodId, updateFood);
         return getFoodUseCase.execute(foodId);
+    }
+
+    @Override
+    public long deleteFood(UUID foodId) {
+        return deleteFoodUseCase.execute(foodId);
     }
 }

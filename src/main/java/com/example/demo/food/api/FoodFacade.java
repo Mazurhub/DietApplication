@@ -15,4 +15,6 @@ public interface FoodFacade {
     List<Food> getFoods();
 
     Food updateFood(UUID foodId, UpdateFood updateFood);
+
+    long deleteFood(UUID foodId);
 }

@@ -3,8 +3,6 @@ package com.example.demo.food.api;
 import com.example.demo.food.api.dto.CreateFood;
 import com.example.demo.food.api.dto.Food;
 import com.example.demo.food.api.dto.UpdateFood;
-import com.example.demo.user.api.dto.UpdateUser;
-import com.example.demo.user.api.dto.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,5 +35,9 @@ class FoodController {
     @PutMapping("/{foodId}")
     Food updateFood(@PathVariable UUID foodId, @RequestBody UpdateFood updateFood) {
         return foodFacade.updateFood(foodId, updateFood);
+    }
+    @DeleteMapping("/{foodId}")
+    long deleteFood(@PathVariable UUID foodId){
+        return foodFacade.deleteFood(foodId);
     }
 }
