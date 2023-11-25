@@ -1,4 +1,12 @@
 package com.example.demo.meal.api;
 
-public class MealFacade {
+import com.example.demo.meal.api.dto.CreateMeal;
+import com.example.demo.meal.api.dto.Meal;
+
+import java.util.UUID;
+
+public interface MealFacade {
+
+    Meal createMeal(CreateMeal createMeal);
+    Meal getMealById(UUID mealId);
 }

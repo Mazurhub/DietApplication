@@ -1,7 +1,10 @@
 package com.example.demo.meal.api;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.demo.meal.api.dto.CreateMeal;
+import com.example.demo.meal.api.dto.Meal;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/meal")
@@ -11,5 +14,16 @@ class MealController {
 
     MealController(MealFacade mealFacade) {
         this.mealFacade = mealFacade;
+    }
+
+    @PostMapping
+    Meal createMeal(@RequestBody CreateMeal createMeal) {
+        return mealFacade.createMeal(createMeal);
+    }
+
+    @RequestMapping("/{mealId}")
+    @GetMapping
+    Meal getMeal(@PathVariable UUID mealId) {
+        return mealFacade.getMealById(mealId);
     }
 }
