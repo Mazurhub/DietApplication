@@ -8,5 +8,6 @@ import java.util.UUID;
 public interface MealFacade {
 
     Meal createMeal(CreateMeal createMeal);
+
     Meal getMealById(UUID mealId);
 }

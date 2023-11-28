@@ -6,6 +6,7 @@ import com.example.demo.meal.api.dto.Meal;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
+
 @Component
 class MealFacadeImpl implements MealFacade {
     private final CreateMealUseCase createMealUseCase;
