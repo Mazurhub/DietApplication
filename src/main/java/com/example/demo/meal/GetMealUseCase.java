@@ -18,10 +18,7 @@ class GetMealUseCase {
         return new Meal(
                 mealEntity.getId(),
                 mealEntity.getName(),
-                mealEntity.getKcal(),
-                mealEntity.getProtein(),
-                mealEntity.getFat(),
-                mealEntity.getCarbs()
+                mealEntity.getFoodIds()
         );
     }
 }

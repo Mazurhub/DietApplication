@@ -1,13 +1,15 @@
 package com.example.demo.meal;
 
 import com.example.demo.food.api.FoodFacade;
+import com.example.demo.food.api.dto.Food;
 import com.example.demo.meal.api.dto.CreateMeal;
+import com.example.demo.meal.api.dto.Meal;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
-@Transactional
 @Component
 class CreateMealUseCase {
     private final MealRepository mealRepository;
@@ -17,16 +19,18 @@ class CreateMealUseCase {
         this.mealRepository = mealRepository;
         this.foodFacade = foodFacade;
     }
-    UUID execute(CreateMeal createMeal){
-        MealEntity savedMealEntity = new MealEntity();
-        savedMealEntity.setId(UUID.randomUUID());
-        savedMealEntity.setName(createMeal.name());
-        savedMealEntity.setKcal(createMeal.kcal());
-        savedMealEntity.setProtein(createMeal.protein());
-        savedMealEntity.setFat(createMeal.fat());
-        savedMealEntity.setCarbs(createMeal.carbs());
 
-        MealEntity mealEntity = mealRepository.save(savedMealEntity);
-        return mealEntity.getId();
+    UUID execute(CreateMeal createMeal) {
+        List<Food> foods = createMeal.foodIds().stream()
+                .map(foodId -> foodFacade.getFoodById(foodId))
+                .collect(Collectors.toList());
+
+        MealEntity mealEntity = new MealEntity();
+        mealEntity.setId(UUID.randomUUID());
+        mealEntity.setName(createMeal.name());
+        mealEntity.setFoodList(foods);
+
+        MealEntity savedMealEntity = mealRepository.save(mealEntity);
+        return savedMealEntity.getId();
     }
 }

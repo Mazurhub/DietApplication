@@ -17,4 +17,5 @@ public interface FoodFacade {
     Food updateFood(UUID foodId, UpdateFood updateFood);
 
     long deleteFood(UUID foodId);
+
 }
