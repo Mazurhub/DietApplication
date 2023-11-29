@@ -18,4 +18,5 @@ class FoodEntity {
     private double protein;
     private double fat;
     private double carbs;
+    private double amount;
 }

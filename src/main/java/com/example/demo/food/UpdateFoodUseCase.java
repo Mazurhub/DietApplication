@@ -29,6 +29,9 @@ class UpdateFoodUseCase {
         if (updateFood.carbs() != 0) {
             existingFood.setCarbs(updateFood.carbs());
         }
+        if (updateFood.amount() != 0) {
+            existingFood.setAmount(updateFood.amount());
+        }
         existingFood = foodRepository.save(existingFood);
         return existingFood.getId();
 

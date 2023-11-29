@@ -22,7 +22,7 @@ class GetMealUseCase {
         MealEntity mealEntity = mealRepository.findById(mealId).orElseThrow();
 
         List<String> foodNames = mealEntity.getFoodIds().stream()
-                .map(foodId -> foodFacade.getFoodById(foodId).getName())
+                .map(foodId -> foodFacade.getFoodById(foodId).name())
                 .collect(Collectors.toList());
 
         return new Meal(

@@ -20,7 +20,8 @@ class GetFoodUseCase {
                 foodEntity.getKcal(),
                 foodEntity.getProtein(),
                 foodEntity.getFat(),
-                foodEntity.getCarbs()
+                foodEntity.getCarbs(),
+                foodEntity.getAmount()
         );
     }
 }

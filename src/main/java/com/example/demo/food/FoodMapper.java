@@ -10,7 +10,8 @@ class FoodMapper {
                 foodEntity.getKcal(),
                 foodEntity.getProtein(),
                 foodEntity.getFat(),
-                foodEntity.getCarbs()
+                foodEntity.getCarbs(),
+                foodEntity.getAmount()
         );
     }
 }

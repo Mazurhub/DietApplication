@@ -21,18 +21,18 @@ class CreateMealUseCase {
 
     UUID execute(CreateMeal createMeal) {
         List<Food> foods = createMeal.foodIds().stream()
-                .map(foodId -> foodFacade.getFoodById(foodId))
-                .collect(Collectors.toList());
+                .map(foodFacade::getFoodById)
+                .toList();
 
         MealEntity mealEntity = new MealEntity();
         mealEntity.setId(UUID.randomUUID());
         mealEntity.setName(createMeal.name());
-        mealEntity.setFoodIds(foods.stream().map(Food::getId).collect(Collectors.toList()));
+        mealEntity.setFoodIds(foods.stream().map(Food::id).collect(Collectors.toList()));
 
-        mealEntity.setTotalKcal(foods.stream().mapToDouble(Food::getKcal).sum());
-        mealEntity.setTotalProtein(foods.stream().mapToDouble(Food::getProtein).sum());
-        mealEntity.setTotalFat(foods.stream().mapToDouble(Food::getFat).sum());
-        mealEntity.setTotalCarbs(foods.stream().mapToDouble(Food::getCarbs).sum());
+        mealEntity.setTotalKcal(foods.stream().mapToDouble(Food::kcal).sum());
+        mealEntity.setTotalProtein(foods.stream().mapToDouble(Food::protein).sum());
+        mealEntity.setTotalFat(foods.stream().mapToDouble(Food::fat).sum());
+        mealEntity.setTotalCarbs(foods.stream().mapToDouble(Food::carbs).sum());
 
         MealEntity savedMealEntity = mealRepository.save(mealEntity);
         return savedMealEntity.getId();

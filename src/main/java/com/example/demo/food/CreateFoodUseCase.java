@@ -22,6 +22,7 @@ class CreateFoodUseCase {
         savedFoodEntity.setProtein(createFood.protein());
         savedFoodEntity.setFat(createFood.fat());
         savedFoodEntity.setCarbs(createFood.carbs());
+        savedFoodEntity.setAmount(createFood.amount());
 
         FoodEntity foodEntity = foodRepository.save(savedFoodEntity);
         return foodEntity.getId();
