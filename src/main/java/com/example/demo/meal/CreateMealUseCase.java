@@ -48,3 +48,5 @@ public class CreateMealUseCase {
         return nutritionCalculator.calculateNutrition(oldAmount, newAmount);
     }
 }
+
+//something
