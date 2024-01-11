@@ -20,5 +20,5 @@ class MealEntity {
     private double totalProtein;
     private double totalFat;
     private double totalCarbs;
-    test
+    tests
 }
